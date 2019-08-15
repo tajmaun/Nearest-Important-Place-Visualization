@@ -1,0 +1,84 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:gravity="center"
+    android:orientation="vertical" >
+    
+	<Button
+        android:id="@+id/resturant"
+        android:text="@string/Resturant" 
+        android:textColor="#FFFFFF"
+        android:textSize="23sp"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:onClick="sendMessage1"
+        android:background="@drawable/visitors"
+        android:shadowRadius="5"
+        android:layout_margin="0px"/>
+ 
+    <Button
+        android:id="@+id/hotel"
+        android:text="@string/Hotel" 
+        android:textColor="#FFFFFF"
+        android:textSize="23sp"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:background="@drawable/visitors"
+        android:shadowRadius="5"
+         android:onClick="sendMessage2"
+        android:layout_margin="3dip"/>
+ 
+    <Button
+        android:id="@+id/hospital"
+        android:text="@string/Hospital" 
+        android:textColor="#FFFFFF"
+        android:textSize="23sp"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:background="@drawable/visitors"
+        android:shadowRadius="5" 
+         android:onClick="sendMessage3"
+        android:layout_margin="3dip"/>
+
+    <Button
+        android:id="@+id/polic_station"
+        android:text="@string/Police" 
+        android:textColor="#FFFFFF"
+        android:textSize="23sp"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:shadowColor="#A8A8A8"
+        android:background="@drawable/visitors"
+        android:shadowDx="0"
+        android:shadowDy="0"
+         android:onClick="sendMessage4"
+        android:shadowRadius="5"
+        android:layout_margin="3dip"/>
+    
+    <Button
+        android:id="@+id/historical_place"
+        android:text="@string/Historical" 
+        android:textColor="#FFFFFF"
+        android:textSize="23sp"
+        android:layout_width="220dp"
+        android:layout_height="40dp"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+         android:onClick="sendMessage5"
+        android:background="@drawable/visitors"
+        android:shadowRadius="5" 
+        android:layout_margin="3dip"/>
+    
+    
+</LinearLayout>

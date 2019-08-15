@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TestMap</string>
+     <string name="action_settings">Map</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="Resturant">Restaurant</string>
+    <string name="Hotel">Establishment</string>
+    <string name="Hospital">Hospital</string>
+    <string name="Police">Police Station</string>
+    <string name="Historical">Entertainment</string>
+    
+
+</resources>
