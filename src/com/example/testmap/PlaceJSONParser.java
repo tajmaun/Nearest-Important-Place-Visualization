@@ -10,20 +10,20 @@ import org.json.JSONObject;
 public class PlaceJSONParser {
 	///** Receives a JSONObject and returns a list */
 	public List<HashMap<String,String>> parse(JSONObject jObject){		
-		
+
 		JSONArray jPlaces = null;
 		try {			
-		//	 Retrieves all the elements in the 'places' array 
+			//	 Retrieves all the elements in the 'places' array 
 			jPlaces = jObject.getJSONArray("results");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-	
-		
+
+
 		return  getPlaces(jPlaces);
 	}
-	
-	
+
+
 	private List<HashMap<String, String>> getPlaces(JSONArray jPlaces){
 		int placesCount = jPlaces.length();
 		List<HashMap<String, String>> placesList = new ArrayList<HashMap<String,String>>();
@@ -40,10 +40,10 @@ public class PlaceJSONParser {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return placesList;
 	}
-	
+
 	/** Parsing the Place JSON object */
 	private HashMap<String, String> getPlace(JSONObject jPlace){
 
@@ -52,55 +52,55 @@ public class PlaceJSONParser {
 		String vicinity="-NA-";
 		String latitude="";
 		String longitude="";
-		
-        //String vicinity="-NA-";
-        //String latitude="";
-        //String longitude="";
-        String formatted_address="Not Found";
-        String formatted_phone="+8801711079522";
-        String website="www.sadiakitchen.com";
-        String rating="3.9";
-        String international_phone_number="Not Found";
-      //  String url="-NA-";
-				
-		
+
+		//String vicinity="-NA-";
+		//String latitude="";
+		//String longitude="";
+		String formatted_address="Not Found";
+		String formatted_phone="+8801711079522";
+		String website="www.sadiakitchen.com";
+		String rating="3.9";
+		String international_phone_number="Not Found";
+		//  String url="-NA-";
+
+
 		try {
 			// Extracting Place name, if available
 			if(!jPlace.isNull("name")){
 				placeName = jPlace.getString("name");
 			}
-			
+
 			// Extracting Place Vicinity, if available
 			if(!jPlace.isNull("vicinity")){
 				vicinity = jPlace.getString("vicinity");
 			}	
-			 if(!jPlace.isNull("formatted_address")){
-	                formatted_address = jPlace.getString("formatted_address");
-	            }
-	 
-	            // Extracting Place formatted_phone, if available
-	            if(!jPlace.isNull("formatted_phone_number")){
-	                formatted_phone = jPlace.getString("formatted_phone_number");
-	            }
-	 
-	            // Extracting website, if available
-	            if(!jPlace.isNull("website")){
-	                website = jPlace.getString("website");
-	            }
-	 
-	            // Extracting rating, if available
-	            if(!jPlace.isNull("rating")){
-	                 rating = jPlace.getString("rating");
-	            }
-	 
-	            // Extracting rating, if available
-	            if(!jPlace.isNull("international_phone_number")){
-	                international_phone_number = jPlace.getString("international_phone_number");
-	            }
+			if(!jPlace.isNull("formatted_address")){
+				formatted_address = jPlace.getString("formatted_address");
+			}
+
+			// Extracting Place formatted_phone, if available
+			if(!jPlace.isNull("formatted_phone_number")){
+				formatted_phone = jPlace.getString("formatted_phone_number");
+			}
+
+			// Extracting website, if available
+			if(!jPlace.isNull("website")){
+				website = jPlace.getString("website");
+			}
+
+			// Extracting rating, if available
+			if(!jPlace.isNull("rating")){
+				rating = jPlace.getString("rating");
+			}
+
+			// Extracting rating, if available
+			if(!jPlace.isNull("international_phone_number")){
+				international_phone_number = jPlace.getString("international_phone_number");
+			}
 			latitude = jPlace.getJSONObject("geometry").getJSONObject("location").getString("lat");
 			longitude = jPlace.getJSONObject("geometry").getJSONObject("location").getString("lng");			
-			
-			
+
+
 			place.put("place_name", placeName);
 			place.put("vicinity", vicinity);
 			place.put("lat", latitude);
@@ -110,9 +110,9 @@ public class PlaceJSONParser {
 			place.put("web", website);
 			place.put("fp", formatted_phone);
 			place.put("fa", formatted_address);
-			
-			
-			
+
+
+
 		} catch (JSONException e) {			
 			e.printStackTrace();
 		}		

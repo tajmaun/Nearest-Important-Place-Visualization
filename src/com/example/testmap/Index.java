@@ -70,21 +70,21 @@ public class Index extends Activity {
 		builder.setTitle("Sort the place according to ").setItems(option,
 				new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						if (which == 0) {
-							RankBy = "distance";
-						} else
-							RankBy = "prominence";
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				if (which == 0) {
+					RankBy = "distance";
+				} else
+					RankBy = "prominence";
 
-						Intent i = new Intent(getApplicationContext(),
-								Thread_Test.class);
-						i.putExtra("tag", s);
-						i.putExtra("_rank", RankBy);
-						startActivity(i);
-					}
-				});
+				Intent i = new Intent(getApplicationContext(),
+						Thread_Test.class);
+				i.putExtra("tag", s);
+				i.putExtra("_rank", RankBy);
+				startActivity(i);
+			}
+		});
 
 		return builder.create();
 	}

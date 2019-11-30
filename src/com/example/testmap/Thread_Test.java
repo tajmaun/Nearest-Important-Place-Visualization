@@ -37,31 +37,30 @@ public class Thread_Test extends ListActivity{
 	ArrayList<String>detail=new ArrayList<String>();
 	//List<HashMap<String, String>> list=null;
 	ArrayAdapter<String>aa;
-	 ListView listView;
-	 public static final String[] option = { "Details", "Map","Google Map"};
+	ListView listView;
+	public static final String[] option = { "Details", "Map","Google Map"};
 	private Handler handler = new Handler();
 
-	//List<HashMap<String, String>> places = null;	
 	List<HashMap<String, String>> list=null;
-/***************************************************************************************************************************************************************************/
+	/***************************************************************************************************************************************************************************/
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		//setContentView(R.layout.list_view);
 		Intent intent=getIntent();
-	     //listView = (ListView) findViewById(R.id.sampleListView);
+		//listView = (ListView) findViewById(R.id.sampleListView);
 		type=intent.getStringExtra("tag");
 		Rank=intent.getStringExtra("_rank");
 		aa=new ArrayAdapter<String>(getApplicationContext(), R.layout.light,R.id.label, _place);
-	   setListAdapter(aa);
+		setListAdapter(aa);
 		//gps=new CurrentLocation(this);
 		sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
 		sb.append("location="+a+","+b);
 		if(Rank.contentEquals("prominence"))
-		sb.append("&radius=50");
+			sb.append("&radius=50");
 		else
-		sb.append("&rankby=distance");
+			sb.append("&rankby=distance");
 		sb.append("&types="+type);
 		sb.append("&sensor=false");
 		sb.append("&key=AIzaSyBNKAaUkBRlrOyPBO8Fd5BRADceqyLW0MI");
@@ -69,165 +68,165 @@ public class Thread_Test extends ListActivity{
 			String data=null;
 			public void run() {
 				try{
-				data=downloadUrl(sb.toString());
+					data=downloadUrl(sb.toString());
 				}
 				catch(Exception e){
-					 Log.d("Background Task",e.toString());
+					Log.d("Background Task",e.toString());
 				}
-				
+
 				list=Parse(data);
-			for(int i=0;i<list.size();i++){
-				
-	            
-	            // Getting a place from the places list
-	            HashMap<String, String> hmPlace = list.get(i);
-	           
-	            
-	            // Getting name
-	            final String name = hmPlace.get("place_name");
-	            Place.add(name);
-	            handler.post(new Runnable(){
+				for(int i=0;i<list.size();i++){
 
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						if(!name.contentEquals("")){
-						_place.add(name);
-						Place.add(name);
 
-						aa.notifyDataSetChanged();
+					// Getting a place from the places list
+					HashMap<String, String> hmPlace = list.get(i);
+
+
+					// Getting name
+					final String name = hmPlace.get("place_name");
+					Place.add(name);
+					handler.post(new Runnable(){
+
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							if(!name.contentEquals("")){
+								_place.add(name);
+								Place.add(name);
+
+								aa.notifyDataSetChanged();
+							}
 						}
-					}
-	            	
-	            });
-	           
+
+					});
+
+				}
 			}
+		});
+		t.start();
+
+	}/****end of oncreate()******/
+
+	/*************************************************************************************************************************************************************************/
+	/** A method to download json data from url */
+	private String downloadUrl(String strUrl) throws IOException{
+		String data = "";
+		InputStream iStream = null;
+		HttpURLConnection urlConnection = null;
+		try{
+			URL url = new URL(strUrl);                
+
+
+			// Creating an http connection to communicate with url 
+			urlConnection = (HttpURLConnection) url.openConnection();                
+
+			// Connecting to url 
+			urlConnection.connect();                
+
+			// Reading data from url 
+			iStream = urlConnection.getInputStream();
+
+			BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
+
+			StringBuffer sb  = new StringBuffer();
+
+			String line = "";
+			while( ( line = br.readLine())  != null){
+				sb.append(line);
 			}
-			});
-			t.start();
-		
-			}/****end of oncreate()******/
-	
-/*************************************************************************************************************************************************************************/
-	 /** A method to download json data from url */
-    private String downloadUrl(String strUrl) throws IOException{
-        String data = "";
-        InputStream iStream = null;
-        HttpURLConnection urlConnection = null;
-        try{
-                URL url = new URL(strUrl);                
-                
 
-                // Creating an http connection to communicate with url 
-                urlConnection = (HttpURLConnection) url.openConnection();                
+			data = sb.toString();
 
-                // Connecting to url 
-                urlConnection.connect();                
+			br.close();
 
-                // Reading data from url 
-                iStream = urlConnection.getInputStream();
+		}catch(Exception e){
+			Log.d("Exception while downloading url", e.toString());
+		}finally{
+			iStream.close();
+			urlConnection.disconnect();
+		}
 
-                BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
-                StringBuffer sb  = new StringBuffer();
-
-                String line = "";
-                while( ( line = br.readLine())  != null){
-                        sb.append(line);
-                }
-
-                data = sb.toString();
-
-                br.close();
-
-        }catch(Exception e){
-                Log.d("Exception while downloading url", e.toString());
-        }finally{
-                iStream.close();
-                urlConnection.disconnect();
-        }
-
-        return data;
-    }
-  /**************************************************************************************************************************************************************************/
-    protected List<HashMap<String,String>> Parse(String jsonData) {
+		return data;
+	}
+	/**************************************************************************************************************************************************************************/
+	protected List<HashMap<String,String>> Parse(String jsonData) {
 		JSONObject jObject;
 		List<HashMap<String, String>> places = null;	
 		PlaceJSONParser placeJsonParser = new PlaceJSONParser();
-    
-        try{
-        	jObject = new JSONObject(jsonData);
-        	
-            /** Getting the parsed data as a List construct */
-            places= placeJsonParser.parse(jObject);
-            
-        }catch(Exception e){
-                Log.d("Exception",e.toString());
-        }
-        return places;
-    }
 
-@Override
-public void onListItemClick(ListView parent, View v,  final int position, long id) {
-	  /*String item = (String) getListAdapter().getItem(position);
+		try{
+			jObject = new JSONObject(jsonData);
+
+			/** Getting the parsed data as a List construct */
+			places= placeJsonParser.parse(jObject);
+
+		}catch(Exception e){
+			Log.d("Exception",e.toString());
+		}
+		return places;
+	}
+
+	@Override
+	public void onListItemClick(ListView parent, View v,  final int position, long id) {
+		/*String item = (String) getListAdapter().getItem(position);
 	  Intent in=new Intent(getApplicationContext(),AndroidPaint.class);
 	  in.putExtra("places", _place);
 	  startActivity(in);*/
-	final int d=position;
-	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    builder.setTitle("Select a Option");
-           builder.setItems(option, new DialogInterface.OnClickListener() {
-               public void onClick(DialogInterface dialog, int which) {
-            	   if(which==0)
-            	   {
-            		   ArrayList<String>detail=new ArrayList<String>();
-            		   HashMap<String, String> hmPlace = list.get(position);
-            		   detail.add(hmPlace.get("fa"));
-            		   detail.add(hmPlace.get("vicinity"));
-       	            detail.add(hmPlace.get("fp"));
-       	            detail.add(hmPlace.get("web"));
-       	            detail.add(hmPlace.get("ip"));
-       	            detail.add(hmPlace.get("rtn"));
-            		   Intent in=new Intent(getApplicationContext(),list_item.class);
-         			  in.putExtra("keep", detail);
-         			  startActivity(in);
-            	   }
-            	   else if(which==1)
-            	   {
-            		   Intent in=new Intent(getApplicationContext(),AndroidPaint.class);
-            			  in.putExtra("places", _place);
-            			  //in.putExtra("call", list.get(position));
-            			  in.putExtra("call", d);
-            			  startActivity(in);   
-            	   }
-            	   else
-            	   {
-            		   Intent in=new Intent(getApplicationContext(),Bridge.class);
-         			  //in.putExtra("places", _place);
-         			  startActivity(in); 
-            	   }
-            		   
-               // The 'which' argument contains the index position
-               // of the selected item
-           }
-    });
-           
-           AlertDialog dialog = builder.create();
-            dialog.show();
-	  //Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+		final int d=position;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Select a Option");
+		builder.setItems(option, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				if(which==0)
+				{
+					ArrayList<String>detail=new ArrayList<String>();
+					HashMap<String, String> hmPlace = list.get(position);
+					detail.add(hmPlace.get("fa"));
+					detail.add(hmPlace.get("vicinity"));
+					detail.add(hmPlace.get("fp"));
+					detail.add(hmPlace.get("web"));
+					detail.add(hmPlace.get("ip"));
+					detail.add(hmPlace.get("rtn"));
+					Intent in=new Intent(getApplicationContext(),list_item.class);
+					in.putExtra("keep", detail);
+					startActivity(in);
+				}
+				else if(which==1)
+				{
+					Intent in=new Intent(getApplicationContext(),AndroidPaint.class);
+					in.putExtra("places", _place);
+					//in.putExtra("call", list.get(position));
+					in.putExtra("call", d);
+					startActivity(in);   
+				}
+				else
+				{
+					Intent in=new Intent(getApplicationContext(),Bridge.class);
+					//in.putExtra("places", _place);
+					startActivity(in); 
+				}
 
-	  // alternatively, use 'position' with a string array defined in your class:
+				// The 'which' argument contains the index position
+				// of the selected item
+			}
+		});
+
+		AlertDialog dialog = builder.create();
+		dialog.show();
+		//Toast.makeText(this, item + " selected", Toast.LENGTH_LONG).show();
+
+		// alternatively, use 'position' with a string array defined in your class:
 		//selection.setText(projectsAsStrings[position]);
 	}
-/*public boolean onOptionsItemSelected(MenuItem item) {
+	/*public boolean onOptionsItemSelected(MenuItem item) {
 	// TODO Auto-generated method stub
 	// Handle presses on the action bar items
 	Log.isLoggable("Background Task",item.getItemId());
-	
-	
-	
-	
-	
+
+
+
+
+
     switch (item.getItemId()) {
         case R.id.action_settings:
         	Toast.makeText(getApplicationContext(), 
@@ -236,7 +235,7 @@ public void onListItemClick(ListView parent, View v,  final int position, long i
         	Intent in=new Intent(getApplicationContext(),AndroidPaint.class);
         	in.putExtra("address", sb.toString());
         	startActivity(in);
-        	
+
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -245,7 +244,7 @@ public void onListItemClick(ListView parent, View v,  final int position, long i
 	//return super.onOptionsItemSelected(item);
 }*/
 
-    
-    
-    /*************************************************************************************************************************************************************************/ 
+
+
+	/*************************************************************************************************************************************************************************/ 
 }/**End of Thread_test***/
